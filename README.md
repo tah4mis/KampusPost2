@@ -1,97 +1,100 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+## KampusPost – React Native Projesi
 
-# Getting Started
+Bu proje, React Native kullanılarak geliştirilmiş basit bir **KampusPost** uygulaması iskeletidir.  
+Ödev kapsamında şu özellikler uygulanmıştır:
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+- **Giriş ekranı (`LoginScreen`)** – E‑posta, şifre alanları ve “Giriş Yap / Kayıt Ol” butonları
+- **Kayıt ekranı (`RegisterScreen`)** – E‑posta, şifre, şifre tekrar alanları ve şifre doğrulama
+- **Ana ekran (`HomeScreen`)** – Uzak API’den post verisi çekme ve listeleme
+- **React Navigation** ile **Stack Navigator** yapısı
+- **Yeniden kullanılabilir `CustomInput` bileşeni**
 
-## Step 1: Start Metro
+## Projeyi Çalıştırma
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
-
-To start the Metro dev server, run the following command from the root of your React Native project:
+Terminalde proje klasörüne girin:
 
 ```sh
-# Using npm
+cd KampusPost
+```
+
+Metro (React Native dev server) başlatın:
+
+```sh
 npm start
-
-# OR using Yarn
-yarn start
 ```
 
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
+Yeni bir terminal penceresinde Android emülatörü veya cihaz üzerinde uygulamayı çalıştırın:
 
 ```sh
-# Using npm
 npm run android
-
-# OR using Yarn
-yarn android
 ```
 
-### iOS
+> iOS için ek kurulumlar (macOS, Xcode, CocoaPods) gerektiğinden bu projede ana odak Android tarafıdır.
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+## Ekranlar ve Navigasyon
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+- **NavigationContainer + Stack Navigator**  
+  `App.tsx` içinde `NavigationContainer` ve `createNativeStackNavigator` ile şu ekranlar tanımlıdır:
+  - `Login` → `LoginScreen`
+  - `Register` → `RegisterScreen`
+  - `Home` → `HomeScreen`  
+  Açılış ekranı **LoginScreen**’dir (`initialRouteName="Login"`).
 
-```sh
-bundle install
-```
+- **LoginScreen**  
+  - Üst yazı: **“KampüsPost’a Hoş Geldiniz!”**  
+  - Başlık: **“Giriş Yap”**  
+  - Alanlar: E‑posta, Şifre (`CustomInput` bileşeni ile)  
+  - Butonlar:
+    - **“Giriş Yap”** → şimdilik doğrulama yapmadan **HomeScreen**’e yönlendirir.
+    - **“Kayıt Ol”** → **RegisterScreen**’e yönlendirir.
 
-Then, and every time you update your native dependencies, run:
+- **RegisterScreen**  
+  - Alanlar: E‑posta, Şifre, Şifre Tekrar (tamamı `CustomInput` kullanır).  
+  - **“Kayıt Ol”** butonu:
+    - Şifreler uyuşmazsa: `Alert.alert("Hata", "Şifreler uyuşmuyor!")`
+    - Şifreler aynıysa:
+      - `console.log("Kayıt başarılı", { email })`
+      - `Alert.alert("Başarılı", "Kayıt başarılı! Giriş yapabilirsiniz.")`
+      - Ardından **LoginScreen**’e geri yönlendirir.
 
-```sh
-bundle exec pod install
-```
+- **HomeScreen**  
+  - `useEffect` ile `https://jsonplaceholder.typicode.com/posts` adresinden veri çeker.  
+  - Gelen veriyi `Post[]` tipinde state’e kaydeder ve konsola `Posts verisi:` olarak yazdırır.  
+  - `FlatList` ile her post için:
+    - Başlık (`title`) → kalın/büyük
+    - İçerik (`body`) → altında normal metin şeklinde gösterilir.  
+  - Veri yüklenirken:
+    - Ortada spinner ve **“Yükleniyor…”** metni görünür.
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+## Proje Klasör Yapısı (Özet)
 
-```sh
-# Using npm
-npm run ios
+- **App.tsx** – `NavigationContainer` + `Stack.Navigator`
+- **components/**
+  - `LoginScreen.tsx` – Giriş ekranı (form + butonlar)
+  - `RegisterScreen.tsx` – Kayıt ekranı (şifre kontrolü + yönlendirme)
+  - `HomeScreen.tsx` – Post listesini gösteren ekran (API + FlatList)
+  - `CustomInput.tsx` – Ortak giriş bileşeni
 
-# OR using Yarn
-yarn ios
-```
+## Teslim İçin Önerilen Ekran Görüntüleri
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+- **Proje klasör yapısı**  
+  `KampusPost` klasörünün içini (özellikle `App.tsx` ve `components/` klasörünü) gösteren ekran görüntüsü.
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+- **Navigasyon yapısı**  
+  `App.tsx` içindeki `NavigationContainer` + `Stack.Navigator` kodunun ekran görüntüsü.
 
-## Step 3: Modify your app
+- **Giriş ekranı**  
+  `KampüsPost’a Hoş Geldiniz!` üst yazısı, `Giriş Yap` başlığı, e‑posta / şifre alanları ve  
+  **“Giriş Yap” / “Kayıt Ol”** butonlarının göründüğü ekran.
 
-Now that you have successfully run the app, let's make changes!
+- **Kayıt ekranı**  
+  E‑posta, Şifre, Şifre Tekrar alanları ve **“Kayıt Ol”** butonunun göründüğü ekran.  
+  Şifreler uyuşmadığında çıkan **Alert** penceresinin ekran görüntüsü.  
+  Şifreler uyduğunda konsolda görünen **“Kayıt başarılı”** logunun ekran görüntüsü.
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+- **HomeScreen ve veri çekme**  
+  - `Posts verisi:` log’unun göründüğü **DevTools Console** veya terminal ekranı.  
+  - `FlatList` ile post’ların listelendiği HomeScreen ekran görüntüsü.  
+  - Varsa **“Yükleniyor…”** metninin göründüğü anın ekran görüntüsü.
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
