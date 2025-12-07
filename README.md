@@ -1,4 +1,5 @@
 ## KampusPost – React Native Projesi
+## Kopyalamayınız
 Görseller:
 <img width="620" height="989" alt="Ekran görüntüsü 2025-12-03 150622" src="https://github.com/user-attachments/assets/660e0f7d-1460-4f9f-b3f0-ef184a95c794" />
 <img width="618" height="974" alt="Ekran görüntüsü 2025-12-03 150654" src="https://github.com/user-attachments/assets/2b271cad-f253-443c-8777-8ea8ca2b656e" />
